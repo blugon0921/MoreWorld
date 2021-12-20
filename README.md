@@ -18,7 +18,7 @@
 <br>
 /mw unload [WorldName] - Unload world
 
-## permissions
+## Permissions
 moreworld.command - Visible command
 <br>
 moreworld.create - Create new world
