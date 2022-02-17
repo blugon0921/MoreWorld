@@ -25,9 +25,7 @@ class TabComplete : TabCompleter {
                         if(r.startsWith(args[0].lowercase())) {
                             if(r == "create" && !hasCreatePermission) continue
                             if(r == "remove" && !hasRemovePermission) continue
-                            if(r == "teleport" || r == "tp") {
-                                if(!hasTeleportPermission) continue
-                            }
+                            if(r == "teleport" || r == "tp") if(!hasTeleportPermission) continue
                             if(r == "load" && !hasLoadPermission) continue
                             if(r == "unload" && !hasUnloadPermission) continue
                             returns.add(r)
@@ -64,18 +62,9 @@ class TabComplete : TabCompleter {
                             }
                             return returns
                         }
-                        "teleport" -> {
+                        "teleport", "tp" -> {
                             for(r in Bukkit.getOnlinePlayers()) {
-                                if(r.name.startsWith(args[1].lowercase())) {
-                                    if(!hasTeleportPermission) continue
-                                    returns.add(r.name)
-                                }
-                            }
-                            return returns
-                        }
-                        "tp" -> {
-                            for(r in Bukkit.getOnlinePlayers()) {
-                                if(r.name.startsWith(args[1].lowercase())) {
+                                if(r.name.lowercase().startsWith(args[1].lowercase())) {
                                     if(!hasTeleportPermission) continue
                                     returns.add(r.name)
                                 }
@@ -85,22 +74,25 @@ class TabComplete : TabCompleter {
                     }
                 }
                 3 -> {
-                    if(args[0] == "create") {
-                        for(r in arrayListOf("default", "nether", "the_end")) {
-                            if(r.startsWith(args[2].lowercase())) {
-                                if(!hasCreatePermission) continue
-                                returns.add(r.lowercase())
+                    when(args[0]) {
+                        "create" -> {
+                            for(r in arrayListOf("default", "nether", "the_end")) {
+                                if(r.startsWith(args[2].lowercase())) {
+                                    if(!hasCreatePermission) continue
+                                    returns.add(r.lowercase())
+                                }
                             }
+                            return returns
                         }
-                        return returns
-                    } else if(args[0] == "teleport" || args[0] == "tp") {
-                        for(r in Bukkit.getWorlds()) {
-                            if(r.name.startsWith(args[2].lowercase())) {
-                                if(!hasTeleportPermission) continue
-                                returns.add(r.name)
+                        "teleport", "tp" -> {
+                            for(r in Bukkit.getWorlds()) {
+                                if(r.name.lowercase().startsWith(args[2].lowercase())) {
+                                    if(!hasTeleportPermission) continue
+                                    returns.add(r.name)
+                                }
                             }
+                            return returns
                         }
-                        return returns
                     }
                 }
             }

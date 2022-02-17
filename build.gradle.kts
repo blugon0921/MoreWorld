@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "io.github.blugon09"
-version = "1.0.0-SNAPSHOT"
+version = "1.0.0"
 
 
 java {
@@ -24,7 +24,6 @@ dependencies {
     compileOnly("io.papermc.paper:paper-api:1.18.1-R0.1-SNAPSHOT")
 
     implementation("net.kyori:adventure-api:4.9.3")
-    implementation("net.projecttl:InventoryGUI-api:4.3.0")
     implementation("io.github.blugon09:PluginHelper:1.0.6-SNAPSHOT")
 }
 
