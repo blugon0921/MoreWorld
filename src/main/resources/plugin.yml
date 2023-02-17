@@ -3,6 +3,10 @@ version: ${project.version}
 main: ${project.group}.${project.name.toLowerCase()}.${project.name}
 api-version: 1.18
 author: Blugon
+libraries:
+  - io.github.monun:invfx-core:3.2.0
+  - io.github.monun:kommand-core:3.0.0
+  - io.github.monun:tap-core:4.8.0
 
 permissions:
   moreworld.command:
@@ -11,14 +15,11 @@ permissions:
     description: Create new world
   moreworld.remove:
     description: Remove world
-  moreworld.teleport:
+  moreworld.move:
     description: Teleport world
   moreworld.load:
     description: Load world
   moreworld.unload:
     description: Unload world
-
-commands:
-  moreworld:
-    aliases: [mw]
-    permission: moreworld.command
+  moreworld.list:
+    description: List world

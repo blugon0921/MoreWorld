@@ -1,10 +1,11 @@
 plugins {
-    kotlin("jvm") version "1.6.0"
+    kotlin("jvm") version "1.8.0"
     id("com.github.johnrengelman.shadow") version "7.1.1"
 }
 
-group = "io.github.blugon09"
-version = "1.0.0"
+group = "kr.blugon"
+version = "1.1.0"
+val buildLocation = File("C:/Files/Minecraft/Servers/\$plugins")
 
 
 java {
@@ -16,15 +17,14 @@ java {
 repositories {
     mavenCentral()
     maven("https://papermc.io/repo/repository/maven-public/")
-    maven("https://repo.projecttl.net/repository/maven-public/")
 }
 
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib:1.6.0")
-    compileOnly("io.papermc.paper:paper-api:1.18.1-R0.1-SNAPSHOT")
-
-    implementation("net.kyori:adventure-api:4.9.3")
-    implementation("io.github.blugon09:PluginHelper:1.0.6-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:1.19.3-R0.1-SNAPSHOT")
+//    implementation("io.github.monun:invfx-api:3.2.0")
+    implementation("io.github.monun:kommand-api:3.0.0")
+//    implementation("io.github.monun:tap-api:4.8.0")
 }
 
 
@@ -39,6 +39,22 @@ tasks {
         }
     }
 
+    jar {
+        archiveVersion.set(project.version.toString())
+        archiveBaseName.set(project.name)
+        archiveFileName.set("${project.name}.jar")
+        from(sourceSets["main"].output)
+
+        doLast {
+            copy {
+                from(archiveFile)
+
+                //Build Location
+                into(buildLocation)
+            }
+        }
+    }
+
     shadowJar {
         archiveVersion.set(project.version.toString())
         archiveBaseName.set(project.name)
@@ -50,8 +66,7 @@ tasks {
                 from(archiveFile)
 
                 //Build Location
-                val plugins = File("C:/Files/Minecraft/Servers/Default/plugins")
-                into(plugins)
+                into(buildLocation)
             }
         }
     }
