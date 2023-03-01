@@ -3,9 +3,10 @@ plugins {
     id("com.github.johnrengelman.shadow") version "7.1.1"
 }
 
-group = "kr.blugon"
-version = "1.1.0"
+group = "kr.blugon.blugon09"
+version = "1.1.1"
 val buildLocation = File("C:/Files/Minecraft/Servers/\$plugins")
+//val buildLocation = File("C:/Files/Minecraft/Servers/Default/plugins")
 
 
 java {

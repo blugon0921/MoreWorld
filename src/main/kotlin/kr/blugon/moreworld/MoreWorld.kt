@@ -8,13 +8,15 @@ import org.bukkit.plugin.java.JavaPlugin
 class MoreWorld : JavaPlugin(), Listener {
 
     override fun onEnable() {
-        logger.info("Plugin Enable")
+//        logger.info("Plugin Enable")
+        println("[MoreWorld] Plugin Enable")
         Bukkit.getPluginManager().registerEvents(this, this)
 
         MoreWorldCommand(this)
     }
 
     override fun onDisable() {
-        logger.info("Plugin Disable")
+//        logger.info("Plugin Disable")
+        println("[MoreWorld] Disable")
     }
 }

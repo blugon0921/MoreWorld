@@ -1,6 +1,6 @@
 # More World
 
-[![MoreWorld](https://img.shields.io/badge/MoreWorld-1.1.0-blue.svg)]()
+[![MoreWorld](https://img.shields.io/badge/MoreWorld-1.1.1-blue.svg)]()
 <br><br>
 [![Java](https://img.shields.io/badge/Java-17-FF7700.svg?logo=java)]()
 [![Kotlin](https://img.shields.io/badge/Kotlin-1.8.0-186FCC.svg?logo=kotlin)]()
