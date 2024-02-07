@@ -1,8 +1,8 @@
 package kr.blugon.moreworld.commands
 
-import io.github.monun.kommand.node.RootNode
 import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
+import xyz.icetang.lib.kommand.node.RootNode
 
 class WorldList(plugin : JavaPlugin, rn : RootNode) {
 

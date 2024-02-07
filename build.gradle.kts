@@ -1,33 +1,42 @@
 plugins {
-    kotlin("jvm") version "1.8.0"
-    id("com.github.johnrengelman.shadow") version "7.1.1"
+    kotlin("jvm") version "1.9.22"
+    id("com.github.johnrengelman.shadow") version "7.1.2"
+    id("io.papermc.paperweight.userdev") version "1.5.9"
 }
-
-group = "kr.blugon.blugon09"
-version = "1.1.1"
-val buildLocation = File("C:/Files/Minecraft/Servers/\$plugins")
-//val buildLocation = File("C:/Files/Minecraft/Servers/Default/plugins")
-
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
 }
+
+
+val buildPath = File("C:/Users/blugo/Desktop")
+val mcVersion = "1.20.4"
+val kommandVersion = "3.1.11"
+val kotlinVersion = kotlin.coreLibrariesVersion
 
 
 repositories {
     mavenCentral()
-    maven("https://papermc.io/repo/repository/maven-public/")
+    maven("https://repo.blugon.kr/repository/maven-public/")
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.6.0")
-    compileOnly("io.papermc.paper:paper-api:1.19.3-R0.1-SNAPSHOT")
-//    implementation("io.github.monun:invfx-api:3.2.0")
-    implementation("io.github.monun:kommand-api:3.0.0")
-//    implementation("io.github.monun:tap-api:4.8.0")
+    compileOnly(kotlin("stdlib"))
+    compileOnly(kotlin("reflect"))
+    paperweight.paperDevBundle("${mcVersion}-R0.1-SNAPSHOT")
+    implementation("kr.blugon:pluginPlus:latest.release")
+    compileOnly("xyz.icetang.lib:kommand-api:${kommandVersion}")
 }
 
+extra.apply {
+    set("ProjectName", project.name)
+    set("ProjectVersion", project.version)
+    set("KotlinVersion", kotlinVersion)
+    set("MinecraftVersion", mcVersion.split(".").subList(0, 2).joinToString("."))
+    set("KommandVersion", kommandVersion)
+}
 
 tasks {
     compileKotlin {
@@ -35,40 +44,33 @@ tasks {
     }
 
     processResources {
-        filesMatching("plugin.yml") {
+        filesMatching("*.yml") {
             expand(project.properties)
+            expand(extra.properties)
         }
     }
 
-    jar {
-        archiveVersion.set(project.version.toString())
-        archiveBaseName.set(project.name)
-        archiveFileName.set("${project.name}.jar")
-        from(sourceSets["main"].output)
-
-        doLast {
-            copy {
-                from(archiveFile)
-
-                //Build Location
-                into(buildLocation)
-            }
-        }
+    create<Jar>("buildPaper") {
+        this.build()
     }
 
     shadowJar {
-        archiveVersion.set(project.version.toString())
-        archiveBaseName.set(project.name)
-        archiveFileName.set("${project.name}.jar")
-        from(sourceSets["main"].output)
+        this.build()
+    }
+}
 
-        doLast {
-            copy {
-                from(archiveFile)
+fun Jar.build() {
+    val file = File("./build/libs/${project.name}.jar")
+    if(file.exists()) file.deleteOnExit()
+    archiveBaseName.set(project.name) //Project Name
+    archiveFileName.set("${project.name}.jar") //Build File Name
+    archiveVersion.set(project.version.toString()) //Version
+    from(sourceSets["main"].output)
 
-                //Build Location
-                into(buildLocation)
-            }
+    doLast {
+        copy {
+            from(archiveFile) //Copy from
+            into(buildPath) //Copy to
         }
     }
 }

@@ -1,12 +1,14 @@
 package kr.blugon.moreworld.commands
 
-import io.github.monun.kommand.getValue
-import io.github.monun.kommand.node.RootNode
+import net.kyori.adventure.text.Component.text
+import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.World
 import org.bukkit.WorldCreator
 import org.bukkit.plugin.java.JavaPlugin
+import xyz.icetang.lib.kommand.getValue
+import xyz.icetang.lib.kommand.node.RootNode
 
 class RemoveWorld(plugin : JavaPlugin, rn : RootNode) {
 
@@ -35,7 +37,7 @@ class RemoveWorld(plugin : JavaPlugin, rn : RootNode) {
                                 sender.sendMessage("${worldName}세계를 삭제하였습니다")
                             } else {
                                 WorldCreator(worldName).createWorld()
-                                sender.sendMessage("${ChatColor.RED}${worldName}세계 삭제에 실패하였습니다")
+                                sender.sendMessage(text("${worldName}세계 삭제에 실패하였습니다").color(NamedTextColor.RED))
                             }
                         }
                     }, 1)

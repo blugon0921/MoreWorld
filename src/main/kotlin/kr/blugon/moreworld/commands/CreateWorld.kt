@@ -1,10 +1,13 @@
 package kr.blugon.moreworld.commands
 
-import io.github.monun.kommand.StringType
-import io.github.monun.kommand.getValue
-import io.github.monun.kommand.node.RootNode
+import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.Component.text
+import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.*
 import org.bukkit.plugin.java.JavaPlugin
+import xyz.icetang.lib.kommand.StringType
+import xyz.icetang.lib.kommand.getValue
+import xyz.icetang.lib.kommand.node.RootNode
 
 class CreateWorld(plugin : JavaPlugin, rn : RootNode) {
 
@@ -24,7 +27,7 @@ class CreateWorld(plugin : JavaPlugin, rn : RootNode) {
                                 executes {
                                     val worldName : String by it
                                     if(Bukkit.getWorld(worldName) != null) {
-                                        sender.sendMessage("${ChatColor.RED}${worldName}은 이미 존재하는 세계입니다")
+                                        sender.sendMessage(text("${worldName}은 이미 존재하는 세계입니다").color(NamedTextColor.RED))
                                         return@executes
                                     }
                                     val worldEnvironment = when(dimension) {

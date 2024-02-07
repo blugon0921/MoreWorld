@@ -1,11 +1,13 @@
 package kr.blugon.moreworld.commands
 
-import io.github.monun.kommand.StringType
-import io.github.monun.kommand.getValue
-import io.github.monun.kommand.node.RootNode
+import net.kyori.adventure.text.Component.text
+import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.ChatColor
 import org.bukkit.WorldCreator
 import org.bukkit.plugin.java.JavaPlugin
+import xyz.icetang.lib.kommand.StringType
+import xyz.icetang.lib.kommand.getValue
+import xyz.icetang.lib.kommand.node.RootNode
 import java.io.File
 
 class LoadWorld(plugin : JavaPlugin, rn : RootNode) {
@@ -21,14 +23,14 @@ class LoadWorld(plugin : JavaPlugin, rn : RootNode) {
                 executes {
                     val worldName : String by it
                     if(!File(worldName).exists()) {
-                        sender.sendMessage("${ChatColor.RED}${worldName}세계가 존재하지 않습니다")
+                        sender.sendMessage(text("세계가 존재하지 않습니다").color(NamedTextColor.RED))
                         return@executes
                     }
 
                     val world = WorldCreator(worldName).createWorld()
 
                     if(world == null) {
-                        sender.sendMessage("${ChatColor.RED}${worldName}세계가 존재하지 않습니다")
+                        sender.sendMessage(text("세계가 존재하지 않습니다").color(NamedTextColor.RED))
                         return@executes
                     }
 
