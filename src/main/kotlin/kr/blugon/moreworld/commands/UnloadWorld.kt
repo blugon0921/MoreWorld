@@ -1,23 +1,31 @@
 package kr.blugon.moreworld.commands
 
+import com.mojang.brigadier.arguments.StringArgumentType.string
+import io.papermc.paper.command.brigadier.argument.ArgumentTypes.world
+import kr.blugon.kotlinbrigadier.BrigadierNode
+import kr.blugon.kotlinbrigadier.getValue
 import org.bukkit.Bukkit
 import org.bukkit.World
 import org.bukkit.plugin.java.JavaPlugin
-import xyz.icetang.lib.kommand.getValue
-import xyz.icetang.lib.kommand.node.RootNode
 
-class UnloadWorld(plugin : JavaPlugin, rn : RootNode) {
+class UnloadWorld(plugin : JavaPlugin, node : BrigadierNode) {
 
     //mw load [WorldName(String)]
     init {
-        rn.then("unload") {
+        node.then("unload") {
             requires {
-                hasPermission(4, "moreworld.unload")
+                listOf(sender.hasPermission("moreworld.unload"))
             }
 
-            then("world" to dimension()) {
+            then("worldName" to string()) {
+                suggests(Bukkit.getWorlds().map { it.name })
                 executes {
-                    val world : World by it
+                    val worldName : String by it
+                    val world = Bukkit.getWorld(worldName)
+                    if(world == null) {
+                        sender.sendMessage("${worldName}은(는) 존재하지 않는 월드입니다")
+                        return@executes
+                    }
 
                     for(players in world.players) players.teleport(Bukkit.getWorlds()[0].spawnLocation)
 

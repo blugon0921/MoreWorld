@@ -1,29 +1,31 @@
 package kr.blugon.moreworld.commands
 
-import net.kyori.adventure.text.Component
+import com.mojang.brigadier.arguments.StringArgumentType
+import kr.blugon.kotlinbrigadier.BrigadierNode
+import kr.blugon.kotlinbrigadier.getValue
 import net.kyori.adventure.text.Component.text
 import net.kyori.adventure.text.format.NamedTextColor
-import org.bukkit.*
+import org.bukkit.Bukkit
+import org.bukkit.World
+import org.bukkit.WorldCreator
+import org.bukkit.WorldType
 import org.bukkit.plugin.java.JavaPlugin
-import xyz.icetang.lib.kommand.StringType
-import xyz.icetang.lib.kommand.getValue
-import xyz.icetang.lib.kommand.node.RootNode
 
-class CreateWorld(plugin : JavaPlugin, rn : RootNode) {
+class CreateWorld(plugin : JavaPlugin, node : BrigadierNode) {
 
     //mw create [WorldType] [WorldEnvironment] [WorldName(String)]
 
     init {
-        rn.then("create") {
+        node.then("create") {
             requires {
-                hasPermission(4, "moreworld.create")
+                listOf(sender.hasPermission("moreworld.create"))
             }
 
             for(dimension in arrayListOf("default", "nether", "the_end")) {
                 then(dimension) {
                     for(worldTypeString in arrayListOf("default", "flat", "large_bioms", "amplified")) {
                         then(worldTypeString) {
-                            then("worldName" to string(StringType.SINGLE_WORD)) {
+                            then("worldName" to StringArgumentType.word()) {
                                 executes {
                                     val worldName : String by it
                                     if(Bukkit.getWorld(worldName) != null) {

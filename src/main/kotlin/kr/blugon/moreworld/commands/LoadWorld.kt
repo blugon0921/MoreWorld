@@ -1,25 +1,24 @@
 package kr.blugon.moreworld.commands
 
+import com.mojang.brigadier.arguments.StringArgumentType
+import kr.blugon.kotlinbrigadier.BrigadierNode
+import kr.blugon.kotlinbrigadier.getValue
 import net.kyori.adventure.text.Component.text
 import net.kyori.adventure.text.format.NamedTextColor
-import org.bukkit.ChatColor
 import org.bukkit.WorldCreator
 import org.bukkit.plugin.java.JavaPlugin
-import xyz.icetang.lib.kommand.StringType
-import xyz.icetang.lib.kommand.getValue
-import xyz.icetang.lib.kommand.node.RootNode
 import java.io.File
 
-class LoadWorld(plugin : JavaPlugin, rn : RootNode) {
+class LoadWorld(plugin : JavaPlugin, node : BrigadierNode) {
 
     //mw load [WorldName(String)]
     init {
-        rn.then("load") {
+        node.then("load") {
             requires {
-                hasPermission(4, "moreworld.load")
+                listOf(sender.hasPermission("moreworld.load"))
             }
 
-            then("worldName" to string(StringType.SINGLE_WORD)) {
+            then("worldName" to StringArgumentType.word()) {
                 executes {
                     val worldName : String by it
                     if(!File(worldName).exists()) {

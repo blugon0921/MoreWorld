@@ -1,15 +1,15 @@
 package kr.blugon.moreworld.commands
 
+import kr.blugon.kotlinbrigadier.registerCommandHandler
 import org.bukkit.plugin.java.JavaPlugin
-import xyz.icetang.lib.kommand.kommand
 
 class MoreWorldCommand(plugin : JavaPlugin) {
 
     init {
-        plugin.kommand {
-            register("moreworld", "mw") {
+        plugin.lifecycleManager.registerCommandHandler {
+            register("moreworld", "", "mw") {
                 requires {
-                    hasPermission(4, "moreworld.command")
+                    listOf(sender.hasPermission("moreworld.command"))
                 }
                 CreateWorld(plugin, this)
                 RemoveWorld(plugin, this)

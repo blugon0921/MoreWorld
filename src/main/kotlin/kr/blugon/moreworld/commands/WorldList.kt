@@ -1,17 +1,17 @@
 package kr.blugon.moreworld.commands
 
+import kr.blugon.kotlinbrigadier.BrigadierNode
 import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
-import xyz.icetang.lib.kommand.node.RootNode
 
-class WorldList(plugin : JavaPlugin, rn : RootNode) {
+class WorldList(plugin : JavaPlugin, node : BrigadierNode) {
 
     //mw list
 
     init {
-        rn.then("list") {
+        node.then("list") {
             requires {
-                hasPermission(4, "moreworld.list")
+                listOf(sender.hasPermission("moreworld.list"))
             }
 
             executes {

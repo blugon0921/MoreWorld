@@ -1,19 +1,21 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
-    kotlin("jvm") version "1.9.22"
-    id("com.github.johnrengelman.shadow") version "7.1.2"
-    id("io.papermc.paperweight.userdev") version "1.5.9"
+    kotlin("jvm") version "2.0.0"
+    id("com.github.johnrengelman.shadow") version "8.1.1"
+    id("io.papermc.paperweight.userdev") version "1.7.1"
 }
 
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(17))
+        languageVersion.set(JavaLanguageVersion.of(21))
     }
 }
 
 
-val buildPath = File("C:/Users/blugo/Desktop")
-val mcVersion = "1.20.4"
-val kommandVersion = "3.1.11"
+//val buildPath = File("C:/Users/blugo/Desktop")
+val buildPath = File("C:/Files/Minecraft/Servers/Bedwars/plugins")
+val mcVersion = "1.21"
 val kotlinVersion = kotlin.coreLibrariesVersion
 
 
@@ -26,8 +28,9 @@ dependencies {
     compileOnly(kotlin("stdlib"))
     compileOnly(kotlin("reflect"))
     paperweight.paperDevBundle("${mcVersion}-R0.1-SNAPSHOT")
-    implementation("kr.blugon:pluginPlus:latest.release")
-    compileOnly("xyz.icetang.lib:kommand-api:${kommandVersion}")
+    implementation("kr.blugon:plugin-utils:latest.release")
+    implementation("kr.blugon:mini-color:latest.release")
+    implementation("kr.blugon:kotlin-brigadier:latest.release")
 }
 
 extra.apply {
@@ -35,12 +38,13 @@ extra.apply {
     set("ProjectVersion", project.version)
     set("KotlinVersion", kotlinVersion)
     set("MinecraftVersion", mcVersion.split(".").subList(0, 2).joinToString("."))
-    set("KommandVersion", kommandVersion)
 }
 
 tasks {
     compileKotlin {
-        kotlinOptions.jvmTarget = JavaVersion.VERSION_17.toString()
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_21)
+        }
     }
 
     processResources {

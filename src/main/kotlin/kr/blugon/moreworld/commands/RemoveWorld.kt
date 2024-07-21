@@ -1,28 +1,35 @@
 package kr.blugon.moreworld.commands
 
+import com.mojang.brigadier.arguments.StringArgumentType.string
+import io.papermc.paper.command.brigadier.argument.ArgumentTypes.world
+import kr.blugon.kotlinbrigadier.BrigadierNode
+import kr.blugon.kotlinbrigadier.getValue
 import net.kyori.adventure.text.Component.text
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.Bukkit
-import org.bukkit.ChatColor
 import org.bukkit.World
 import org.bukkit.WorldCreator
 import org.bukkit.plugin.java.JavaPlugin
-import xyz.icetang.lib.kommand.getValue
-import xyz.icetang.lib.kommand.node.RootNode
 
-class RemoveWorld(plugin : JavaPlugin, rn : RootNode) {
+class RemoveWorld(plugin : JavaPlugin, node : BrigadierNode) {
 
     //mw remove [WorldName(String)]
 
     init {
-        rn.then("remove") {
+        node.then("remove") {
             requires {
-                hasPermission(4, "moreworld.remove")
+                listOf(sender.hasPermission("moreworld.remove"))
             }
 
-            then("world" to dimension()) {
+            then("worldName" to string()) {
+                suggests(Bukkit.getWorlds().map { it.name })
                 executes {
-                    val world : World by it
+                    val worldName : String by it
+                    val world = Bukkit.getWorld(worldName)
+                    if(world == null) {
+                        sender.sendMessage("${worldName}은(는) 존재하지 않는 월드입니다")
+                        return@executes
+                    }
                     val worldFolder = world.worldFolder
 
                     for(players in world.players) {
